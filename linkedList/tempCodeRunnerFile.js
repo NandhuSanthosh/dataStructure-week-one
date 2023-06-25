@@ -1,0 +1,2 @@
+n.pop()
+n.displayOn()
