@@ -1,3 +1,23 @@
+
+/*
+DOUBLY LINKED LIST OPERATION IMPLEMENTED
+    push()                  => inserting at end
+    pop()                   => removing from end
+    shift()                 => removing from start
+    unshift()               => inserting at start
+    get()                   => retriving a node by its position
+    set()                   => set a value by its position
+    insert()                => insert node in a specified index
+    remove()                => removing node in a specified index
+    
+    constructor()           => converting array to Linked List
+    deleteByValue()         => Delete node with the value specified
+    insertBeforeAndAfter()  =>Insert a node after & before a node with x data
+    removeDuplicates()      =>remove duplicates in a sorted singly linked list
+
+*/
+
+
 class Node{
     constructor(val){
         this.val = val;
@@ -12,6 +32,11 @@ class DoublyLinkedList{
     tail = null
     length = 0
 
+    constructor(arr){
+        for(let x of arr){
+            this.push(x);
+        }
+    }
 
     // add a element to the end
     push(val){
@@ -69,6 +94,7 @@ class DoublyLinkedList{
         // this recursive function is used to print the LL. The function iterates through every element and 
         // add that to a string
         function helper(curr){
+            // console.log(curr.val)
             if(!curr) return;
             output += `${curr.val} `
             helper(curr.next)
@@ -286,10 +312,91 @@ class DoublyLinkedList{
         return false;
     }
 
+    // deleting all the node with the specified value
+    deleteByValue(value){
+        // this function will recursively delete all the element with the specified value and
+        // will update length
+
+        // if the last get deleted we have to update the tale so we are going to update the tail after all
+        // the recursive call is completed and the program starts coming back. So we make the first node which 
+        // does have value == curr.val is going to be the tail. Then we make the variable true because we don't
+        // have to update the value of the tail again.
+        let isTaleUpdated = 0;
+        let helper = (curr, prev)=>{
+            if(!curr) return null;
+            curr.prev = prev;
+            if(curr.val === value){
+                this.length--;
+                return helper(curr.next, prev);
+            }
+            curr.next = helper(curr.next, curr)
+            if(!isTaleUpdated){
+                this.tail = curr;
+                isTaleUpdated = 1;
+            }
+            return curr;
+        }
+
+        this.head = helper(this.head, null)
+    }
+
+    // add newNodeValue before and after node with data == value
+    insertBeforeAndAfter(value, newNodeValue){
+        let helper = (curr)=>{
+            if(!curr) return;
+            if(curr.val == value){
+                this.length += 2;
+                let newNodeBefore = new Node(newNodeValue)
+                newNodeBefore.next = curr;
+                newNodeBefore.prev = curr.prev;
+                curr.prev = newNodeBefore;
+
+                let newNodeAfter = new Node(newNodeValue);
+                if(curr.next){
+                    curr.next.prev = newNodeAfter;
+                }
+                else{
+                    this.tail = newNodeAfter
+                }
+                newNodeAfter.prev = curr;
+                newNodeAfter.next = helper(curr.next);
+                curr.next = newNodeAfter;
+                return newNodeBefore;
+            }
+            curr.next = helper(curr.next);
+            return curr;
+        }
+        this.head = helper(this.head)
+    }
+
+    // to remove duplicates from a sorted linked list
+    removeDuplicates(){
+        if(this.length <= 1) return;
+        let isTaleUpdated = 0;
+        let helper = (curr)=>{
+            if(!curr) return
+            curr.next = helper(curr.next)
+            if(curr.val == curr.prev.val){
+                if(curr.next)
+                curr.next.prev = curr.prev;
+                this.length--;
+                return curr.next;
+            }
+            if(!isTaleUpdated){
+                this.tail = curr;
+                isTaleUpdated = 1;
+            }
+            return curr;
+        }
+        helper(this.head.next)
+    }
 }
 
-var doublyLinkedList = new DoublyLinkedList;
-doublyLinkedList.push(1).push(2).push(3).push(4)
+var doublyLinkedList = new DoublyLinkedList([1, 2, 2, 2, 3, 3, 3]);
+// doublyLinkedList.push(1).push(2).push(3).push(4)
+
 doublyLinkedList.display()
-doublyLinkedList.reverse()
+doublyLinkedList.insertBeforeAndAfter(3, 4);
+doublyLinkedList.displayRev();
 doublyLinkedList.display()
+console.log(doublyLinkedList.length)
