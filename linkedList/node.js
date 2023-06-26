@@ -218,7 +218,7 @@ class LinkedList{
     }
 
 
-    // this is a problem i found from leetcode 
+    // this is a problem i found from leetcode (2. Add two numbers)
     // you are given two numbers in the form of linked list in reverse order
     // 342 = 2 -> 4 -> 3
     // 465 = 5 -> 6 -> 4
