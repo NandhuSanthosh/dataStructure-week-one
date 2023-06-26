@@ -1,2 +1,1 @@
-n.pop()
-n.displayOn()
+(a.value + b.value + rest)

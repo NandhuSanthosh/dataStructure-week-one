@@ -199,22 +199,120 @@ class LinkedList{
         console.log(curr.value);
     }
 
+    sort(){
+        if(this.length <= 1) return;
+        
+        let i = this.head;
+        while(i.next){
+            let j = i.next;
+            while(j){
+                if(i.value > j.value){
+                    let temp = i.value;
+                    i.value = j.value;
+                    j.value = temp;
+                }
+                j = j.next;
+            }
+            i = i.next;
+        }
+    }
+
+
+    // this is a problem i found from leetcode 
+    // you are given two numbers in the form of linked list in reverse order
+    // 342 = 2 -> 4 -> 3
+    // 465 = 5 -> 6 -> 4
+    
+        static addTwoNumbers(l1, l2){
+
+        let rest = 0;
+        function helper(a, b){
+            // iterate to the end of both the linked list
+            if(!a && !b) {
+                let first = new LinkedList();
+                if(rest !== 0)
+                    first.push(rest);
+                return first;
+            }
+
+            let nodeVal = 0;
+            let smallOutput;
+            let sum = 0;
+            if(!a){
+                rest = Math.floor((b.value + rest) / 10);
+                smallOutput = helper(a, b.next)
+                sum = b.value
+                nodeVal = (b.value + rest) % 10;
+            }
+            else if(!b){
+                rest = Math.floor((a.value + rest) / 10)
+                smallOutput = helper(a.next, b)
+                sum = a.value;
+                nodeVal = (a.value + rest) % 10;
+            }
+            else{
+                sum = a.value + b.value;
+                nodeVal = (a.value + b.value + rest) % 10 ;
+                rest = Math.floor((a.value + b.value + rest) / 10)
+                smallOutput = helper(a.next, b.next);
+            }
+
+            smallOutput.unShift(nodeVal);
+            return smallOutput;
+        }
+
+        
+        let output = helper(l1.head, l2.head);
+        return output;
+    }
+
 }
 
+
+
 let n = new LinkedList()
-n.push(10)
-n.push(20)
-n.push(30)
-n.push(40)
-// n.push("whatThe")
+n.push(5)
+n.push(6)
+n.push(4)
+
+let m = new LinkedList()
+m.push(1)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(0)
+m.push(1)
 
 n.displayOn()
-n.reverse()
-n.displayOn()
+m.displayOn()
+let output = LinkedList.addTwoNumbers(m, n)
 
-n.insertInto(4, 100)
-n.displayOn()
+output.displayOn();
 
-n.reverse();
-n.displayOn()
+
 // n.printReverser(n.head)
