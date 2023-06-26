@@ -222,7 +222,10 @@ class LinkedList{
     // you are given two numbers in the form of linked list in reverse order
     // 342 = 2 -> 4 -> 3
     // 465 = 5 -> 6 -> 4
-    
+    // you have to find the sum of the numbers and return it in the form 
+    // of  a reversed linked list;
+    // 342 + 465 = 807
+    // output = 7 -> 0 -> 8
         static addTwoNumbers(l1, l2){
 
         let rest = 0;
